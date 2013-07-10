@@ -7,13 +7,14 @@ import javax.vecmath.Vector3d;
 
 import es.upm.dit.gsi.gsilejos.lejos.nxt.Motor;
 import es.upm.dit.gsi.gsilejos.lejos.nxt.UltrasonicSensor;
+import es.upm.dit.gsi.gsilejos.lejos.robotics.RegulatedMotor;
 import es.upm.dit.gsi.gsilejos.simbad.gui.Simbad;
 
 import simbad.sim.Wall;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Robot;
 
-public class TachoPilot {
+public class DifferentialPilot {
 
     private Simbad frame;
     private EnvironmentDescription enviroment;
@@ -21,8 +22,8 @@ public class TachoPilot {
     private UltrasonicSensor sensorL;
     private UltrasonicSensor sensorR;
     private UltrasonicSensor sensorF;
-    private Motor leftMotor;
-    private Motor rightMotor;
+    private RegulatedMotor leftMotor;
+    private RegulatedMotor rightMotor;
 
     private double speed = 0.3;
     private int toWaitTime = 100;
@@ -55,8 +56,8 @@ public class TachoPilot {
      * @param leftMotor Motor de la izquierda.
      * @param rightMotor Motor de la derecha.
      */
-    public TachoPilot(final float wheelDiameter, final float trackWidth,
-            final Motor leftMotor, final Motor rightMotor) {
+    public DifferentialPilot(final float wheelDiameter, final float trackWidth,
+            final RegulatedMotor leftMotor, final RegulatedMotor rightMotor) {
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
     }
@@ -465,24 +466,24 @@ public class TachoPilot {
     /////////////////////////////
     // METODOS SIN IMPLEMENTAR //
     /////////////////////////////
-    public TachoPilot(final float wheelDiameter, final float trackWidth,
-            final TachoMotor leftMotor, final TachoMotor rightMotor,
+    public DifferentialPilot(final float wheelDiameter, final float trackWidth,
+            final Motor leftMotor, final Motor rightMotor,
             final boolean reverse) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public TachoPilot(final float leftWheelDiameter,
+    public DifferentialPilot(final float leftWheelDiameter,
             final float rightWheelDiameter, final float trackWidth,
-            final TachoMotor leftMotor, final TachoMotor rightMotor,
+            final Motor leftMotor, final Motor rightMotor,
             final boolean reverse) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public TachoMotor getLeft() throws UnsupportedOperationException {
+    public Motor getLeft() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public TachoMotor getRight() throws UnsupportedOperationException {
+    public Motor getRight() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
