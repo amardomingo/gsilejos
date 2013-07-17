@@ -77,7 +77,7 @@ Contributing
 
 At the moment this document was edited, we are migrating the simulator from lejos
 0.8 to 0.9.1. Any help, insight or contributions to the project are welcome and
-and appreciated. Please, feel free to contact us any time.
+ appreciated. Please, feel free to contact us any time.
 
 
 About the Project

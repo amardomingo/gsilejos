@@ -216,10 +216,10 @@ public class DifferentialPilot {
      *
      * @param speed Velocidad a establecer en el piloto.
      */
-    public void setSpeed(final int speed) {
+    /*public void setSpeed(final int speed) {
         this.speed = speed / 10;
         this.robot.setTranslationalVelocity(this.speed);
-    }
+    }*/
 
     /**
      * Setter.
@@ -231,7 +231,7 @@ public class DifferentialPilot {
      * @param speed Velocidad a establecer.
      * @param tipo Tipo de velocidad.
      */
-    public void setSpeed(final double speed, byte tipo) {
+    private void setSpeed(double speed, byte tipo) {
         this.speed = speed / 10;
         if (tipo == 0) {
             this.robot.setTranslationalVelocity(this.speed);
@@ -246,15 +246,19 @@ public class DifferentialPilot {
      *
      * @param speed Velocidad a establecer.
      */
-    public void setMoveSpeed(float speed) {
+    public void setTravelSpeed(double speed) {
         this.setSpeed(speed, (byte) 0);
+    }
+    
+    public void setRotateSpeed(double speed) {
+        this.setSpeed(speed, (byte) 1);
     }
 
     /**
      * Getter.
      * Devuelve la velocidad de traslación del piloto.
      */
-    public float getMoveSpeed() {
+    public float getTravelSpeed() {
         return (float) this.speed;
     }
 
@@ -278,7 +282,7 @@ public class DifferentialPilot {
      *
      * @param angle Ángulo a rotar, en grados.
      */
-    public void rotate(final float angle) {
+    public void rotate(double angle) {
         //Variable aleatoria para añadir realismo al giro
         int va = 0;
         int va2 = 0;
@@ -300,8 +304,24 @@ public class DifferentialPilot {
      * @param angle Ángulo a rotar.
      * @param immediateReturn No se utiliza.
      */
-    public void rotate(final float angle, final boolean immediateReturn) {
+    public void rotate(double angle, boolean immediateReturn) {
         this.rotate(angle);
+    }
+    
+    /**
+     * Gira 90º a la izquierda
+     * 
+     */
+    public void rotateLeft() {
+    	this.rotate(90);
+    }
+    
+    /**
+     * Gira 90º a la derecha
+     * 
+     */
+    public void rotateRight() {
+    	this.rotate(-90);
     }
 
     /**
@@ -310,10 +330,10 @@ public class DifferentialPilot {
      *
      * @param velocidad Velocidad de rotación.
      */
-    public void rotate(double velocidad) {
+    /*public void rotate(double velocidad) {
         this.robot.setTranslationalVelocity(0);
         this.robot.setRotationalVelocity(velocidad);
-    }
+    }*/
 
     /**
      * Getter.
@@ -321,17 +341,18 @@ public class DifferentialPilot {
      *
      * @return Si el piloto está en rotación.
      */
+    /*
     public boolean getRotacionMotor() {
         return this.rotacionMotor;
-    }
+    }*/
 
     /**
      * Setter.
      * Establece el estado de rotación del piloto.
      */
-    public void setRotacionMotor(boolean estado) {
+    /*public void setRotacionMotor(boolean estado) {
         this.rotacionMotor = estado;
-    }
+    }*/
 
     /**
      * Para el robot, poniendo las velocidades de traslación y rotación a  cero(0).
@@ -340,19 +361,28 @@ public class DifferentialPilot {
         this.robot.setTranslationalVelocity(0);
         this.robot.setRotationalVelocity(0);
     }
+    
+    /**
+     * Para el robot, poniendo las velocidades de traslación y rotación a  cero(0).
+     * 
+     * En el simulador, no hay diferencia con stop()
+     */
+    public void quickStop() {
+    	stop();
+    }
 
     /**
      * Pone a cero(0) una velocidad determinada, en función del argumento.
      *
      * @param velocidad Discrimina entre Traslación(0) y Rotación(1).
      */
-    public void stop(byte velocidad) {
+    /*public void stop(byte velocidad) {
         if (velocidad == 0) {
             this.robot.setTranslationalVelocity(0);
         } else {
             this.robot.setRotationalVelocity(0);
         }
-    }
+    }*/
 
     /**
      * Devuelve 'true' si alguna de las velocidades del robot es distinta de cero(0).
@@ -375,30 +405,30 @@ public class DifferentialPilot {
      *
      * @return Si el piloto está o no en movimiento.
      */
-    public double isMoving(byte velocidad) {
+    /*public double isMoving(byte velocidad) {
         if (velocidad == 0) {
             return this.robot.getTranslationalVelocity();
         } else {
             return this.robot.getRotationalVelocity();
         }
-    }
+    }*/
 
     /**
      * Getter.
      *
      * @return Distancia recorrida
      */
-    public float getTravelDistance() {
+    /*public float getTravelDistance() {
         float odometro = (float) this.robot.getOdometer() * 1000;
         return odometro;
-    }
+    }*/
 
     /**
      * Desplaza el piloto una distancia determinada.
      *
      * @param distance Distancia que se desplazará el piloto.
      */
-    public void travel(final float distance) {
+    public void travel(double distance) {
         double inicio = this.robot.getOdometer();
         boolean noProblem = true; //Para evitar bloqueos contra paredes
         float travelTemp = 0;
@@ -446,7 +476,7 @@ public class DifferentialPilot {
      * @param distance Distancia que se desplazará el piloto.
      * @param immediateReturn No se utiliza.
      */
-    public void travel(final float distance, final boolean immediateReturn) {
+    public void travel(double distance, boolean immediateReturn) {
         this.travel(distance);
     }
 
@@ -478,58 +508,58 @@ public class DifferentialPilot {
             final boolean reverse) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public Motor getLeft() throws UnsupportedOperationException {
+    
+    public void addMoveListener(MoveListener m) {
+    	throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
+    public boolean isStalled() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public Motor getRight() throws UnsupportedOperationException {
+    
+    protected void movementStart(boolean alert) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
-    }
+    }	
 
-    public int getLeftCount() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public int getRightCount() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public int getLeftActualSpeed() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public int getRightActualSpeed() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public float getTurnRatio() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    private void setSpeed(final int leftSpeed, final int rightSpeed)
+    public void setSpeed(final int leftSpeed, final int rightSpeed)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
+    
+    public void setAcceleration(int acceleration) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
+    public void setMinRadius(double radius) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
 
-    public float getMoveMaxSpeed() throws UnsupportedOperationException {
+    public float getMaxTravelSpeed() throws UnsupportedOperationException {
         // Simbad no está limitado por la velocidad
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void setTurnSpeed(float speed) throws UnsupportedOperationException {
+    public double getRotateSpeed() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public float getTurnSpeed() throws UnsupportedOperationException {
+    public float getMaxRotateSpeed() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public float getTurnMaxSpeed() throws UnsupportedOperationException {
+    
+    public double getRotateMaxSpeed() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
+    
+    public double getMinRadiuos() throws UnsupportedOperationException {
+    	throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
+    public Move getMovement() throws UnsupportedOperationException {
+    	throw new UnsupportedOperationException("Este método no está implementado.");
+    }
 
-    public float getAngle() throws UnsupportedOperationException {
+    public float getAngleIncrement() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
@@ -537,50 +567,60 @@ public class DifferentialPilot {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void steer(final float turnRate)
+    public void steer(double turnRate)
+            throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
+    public void steerBackward(double turnRate)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void steer(final float turnRate, float angle)
+    public void steer(double turnRate, double angle)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void steer(final float turnRate, final float angle,
-            final boolean immediateReturn)
+    public void steer(double turnRate, double angle, boolean immediateReturn)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public boolean stalled() throws UnsupportedOperationException {
+    public void rotationStarted(RegulatedMotor motor, int tachoCount, boolean stall, long ts)
+    		throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public void regulateSpeed(final boolean yes)
+    
+    public void	rotationStopped(RegulatedMotor motor, int tachoCount, boolean stall, long ts)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void arc(final float radius) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
+    //public void arc(final double radius) throws UnsupportedOperationException {
+    //    throw new UnsupportedOperationException("Este método no está implementado.");
+    //}
 
-    public void arc(final float radius, final float angle)
+    public void arc(final double radius, final double angle)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void arc(final float radius, final float angle,
+    public void arc(final double radius, final double angle,
             final boolean immediateReturn) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public void travelArc(float radius, float distance) throws UnsupportedOperationException {
+    
+    public void arcBackward(final double radius)
+            throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void travelArc(float radius, float distance, boolean immediateReturn)
+    public void travelArc(double radius, double distance) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+
+    public void travelArc(double radius, double distance, boolean immediateReturn)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }

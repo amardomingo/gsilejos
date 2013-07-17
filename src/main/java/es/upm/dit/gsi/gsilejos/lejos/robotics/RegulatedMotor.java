@@ -4,7 +4,7 @@ import es.upm.dit.gsi.gsilejos.lejos.robotics.navigation.DifferentialPilot;
 
 public class RegulatedMotor {
 
-    private int speed;          // Velocidad
+    private double speed;          // Velocidad
     private byte direction;     // Dirección: 0F 1L 2R
     private boolean moving;     // T or F
     private int anguloRotado;   // Angulo rotado por el motor
@@ -48,8 +48,8 @@ public class RegulatedMotor {
      *                               ya rotando en ese momento.
      */
     public void forward() throws IllegalStateException {
-        if (!this.piloto.getRotacionMotor()) {
-            this.piloto.setSpeed(speed,(byte)1);
+        //if (!this.piloto.getRotacionMotor()) {
+            this.piloto.setRotateSpeed(speed);
             switch (this.direction) {
                 case 0:
                     this.piloto.rotate(speed);
@@ -62,10 +62,10 @@ public class RegulatedMotor {
                     break;
             }
             this.moving = true;
-            this.piloto.setRotacionMotor(true);
-        } else {
-            throw new IllegalStateException("No se puede tener dos motores rotando a la vez.");
-        }
+            //this.piloto.setRotacionMotor(true);
+        //} else {
+        //   throw new IllegalStateException("No se puede tener dos motores rotando a la vez.");
+        //}
     }
 
     /**
@@ -77,8 +77,8 @@ public class RegulatedMotor {
      *                               ya rotando en ese momento.
      */
     public void backward() {
-        if (!this.piloto.getRotacionMotor()) {
-            this.piloto.setSpeed(speed,(byte)1);
+        //if (!this.piloto.getRotacionMotor()) {
+            this.piloto.setRotateSpeed(speed);
             switch (direction) {
                 case 0:
                     this.piloto.rotate((-1)*speed);
@@ -91,20 +91,20 @@ public class RegulatedMotor {
                     break;
             }
             this.moving = true;
-            this.piloto.setRotacionMotor(true);
-        } else {
-            throw new IllegalStateException("No se puede tener dos motores rotando a la vez.");
-        }
+            //this.piloto.setRotacionMotor(true); // Esto debería hacerlo localmente
+        //} else {
+        //    throw new IllegalStateException("No se puede tener dos motores rotando a la vez.");
+        //}
     }
 
     /**
      * Para el motor y establece como 'false' el estado de rotación del mismo.
      */
     public void stop() {
-        byte motor = 1;
-        this.piloto.stop(motor);
+        //byte motor = 1;
+        this.piloto.stop();
         this.moving = false;
-        this.piloto.setRotacionMotor(false);
+        //this.piloto.setRotacionMotor(false);
     }
 
     /**
@@ -175,7 +175,7 @@ public class RegulatedMotor {
      *
      * @return speed Entero con el valor de la velocidad actual del motor.
      */
-    public int getSpeed() {
+    public double getSpeed() {
         return this.speed;
     }
 
@@ -184,7 +184,7 @@ public class RegulatedMotor {
      *
      * @return speed Entero con el valor de la velocidad actual del motor.
      */
-    public int getRotationSpeed() {
+    public double getRotationSpeed() {
         return this.getSpeed();
     }
 
