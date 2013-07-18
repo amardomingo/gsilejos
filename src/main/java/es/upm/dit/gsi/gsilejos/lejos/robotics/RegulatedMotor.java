@@ -1,6 +1,7 @@
 package es.upm.dit.gsi.gsilejos.lejos.robotics;
 
 import es.upm.dit.gsi.gsilejos.lejos.robotics.navigation.DifferentialPilot;
+import es.upm.dit.gsi.gsilejos.lejos.robotics.navigation.MoveListener;
 
 public class RegulatedMotor {
 
@@ -22,15 +23,18 @@ public class RegulatedMotor {
      * La dirección por defecto es 2 (dcha, como establece el algoritmo).
      * El valor de 'move' es cero(0).
      */
-    public RegulatedMotor () {
+    public RegulatedMotor() {
        this.speed = 2;
        this.direction = 2;
        this.moving = false;
     }
+    
 
     /**
      * Setter.
      * Establece el piloto al que pertenece el motor y la dirección del mismo.
+     * 
+     * Solo para el simulador
      *
      * @param piloto
      * @param direction
@@ -194,9 +198,9 @@ public class RegulatedMotor {
      *
      * @return Angulo rotado.
      */
-    public int getAnguloRotado() {
+    /*public int getAnguloRotado() {
         return this.anguloRotado;
-    }
+    }*/
 
    
    
@@ -204,7 +208,11 @@ public class RegulatedMotor {
     // METODOS NO IMPLEMENTADOS //
     //////////////////////////////
 
-    public void reverseDirection() throws UnsupportedOperationException {
+    public void addMoveListener(RegulatedMotorListener m) {
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
+    public RegulatedMotorListener removeListener() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
@@ -212,46 +220,26 @@ public class RegulatedMotor {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public void lock(int power) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
     void updateState( int mode) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public void shutdown() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public void regulateSpeed(boolean yes) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public void smoothAcceleration(boolean yes) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public synchronized void setPower(int power) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public int getMode() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public int getPower() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
     public int getLimitAngle() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public boolean isRegulating() {
+    
+    public float getMaxSpeed() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
+    public boolean isStalled() {
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
+    public void setStallThreshold(int error, int time){
+        throw new UnsupportedOperationException("Este método no está implementado.");
+    }
+    
     public int getTachoCount() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
@@ -260,15 +248,11 @@ public class RegulatedMotor {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
-    public float getError() {
+    public void setAcceleration() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
-
-    public float getBasePower() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
-    }
-
-    public void setBrakePower(int pwr) {
+    
+    public void waitComplete() {
         throw new UnsupportedOperationException("Este método no está implementado.");
     }
 
