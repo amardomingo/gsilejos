@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.upm.dit.gsi</groupId>
 	<artifactId>GSILejos</artifactId>
-	<version>0.5.0</version>
+	<version>0.5.1-SNAPSHOT</version>
 	<name>GSI Lejos</name>
 	<description>Library to simulate controlling Mindstorm Lego Robots with Lejos</description>
 
