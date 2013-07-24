@@ -14,6 +14,16 @@ import simbad.sim.Wall;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Robot;
 
+
+/**
+ * 
+ * Class to simulate the Lejos DifferentialPilot
+ * 
+ * Be careful, some methods are unimplemented
+ * 
+ * @author amardomingo
+ *
+ */
 public class DifferentialPilot {
 
     private Simbad frame;
@@ -51,10 +61,10 @@ public class DifferentialPilot {
     /**
      * Constructor.
      *
-     * @param wheelDiameter El simulador no la utiliza.
-     * @param trackWidth El simulador no la utiliza.
-     * @param leftMotor Motor de la izquierda.
-     * @param rightMotor Motor de la derecha.
+     * @param wheelDiameter Unused by the simulator
+     * @param trackWidth Unused by the simulator
+     * @param leftMotor
+     * @param rightMotor
      */
     public DifferentialPilot(final float wheelDiameter, final float trackWidth,
             final RegulatedMotor leftMotor, final RegulatedMotor rightMotor) {
@@ -63,13 +73,13 @@ public class DifferentialPilot {
     }
 
     /**
-     * Método que configura e inicializa Simbad.
+     * Method to configure and start simbad.
      *
-     * @param x,y 'int' que marca la posición inicial del robot de Simbad.
-     * @param waitTime 'int' tiempo de espera entre medidas de los sensores
-     * @param sensor 'UltrasonicSensor' que utilizará el piloto.
-     * @param realism para activar variables aleatorias en movimientos
-     * @param maze para elegir laberinto
+     * @param x,y 'int' Starting position for the robot
+     * @param waitTime 'int' time to wait between sensor measurements
+     * @param sensor the 'UltrasonicSensor' used by the pilot
+     * @param realism if true, add random deviations to the movements
+     * @param maze The maze number (from 0 to 5)
      */
     public void setSimbad(int x, int z, int waitTime, UltrasonicSensor sensorL, UltrasonicSensor sensorR, UltrasonicSensor sensorF,
             boolean realism, int maze) {
@@ -96,7 +106,7 @@ public class DifferentialPilot {
 
     /**
      * Setter.
-     * Crea el robot que manejará el simulador.
+     * Creates the robot used by the simulator
      *
      * @param posicion 'Vec
      */
@@ -106,8 +116,7 @@ public class DifferentialPilot {
 
     /**
      * Setter.
-     * Configura los motores estableciendo sus direcciones y el piloto al que
-     * pertenecen.
+     * Configure the robots, directions and the pilot they belong to
      */
     private void setMotores() {
         this.leftMotor.setMotor(this, (byte) 1);
@@ -115,7 +124,7 @@ public class DifferentialPilot {
     }
 
     /**
-     * Genera el laberinto a partir del array de paredes.
+     * Generate the maze from the walls array
      */
     private void generateMaze() {
         for (int i = 0; i < 5; i++) {
@@ -188,8 +197,8 @@ public class DifferentialPilot {
     }
 
     /**
-     * Método que auto calibra simbad, estableciendo el valor de la variable
-     * 'waitTime' en función de las pruebas que realiza.
+     * Simbad Self-calibration. Sets the wait time according to its 
+     * own testing
      */
     public void calibrarSimbad() {
         int toWaitTime = this.toWaitTime;
@@ -197,10 +206,9 @@ public class DifferentialPilot {
     }
 
     /**
-     * Método que calibra simbad, estableciendo el valor de la variable 'waitTime'
-     * al valor del argumento.
+     * Calibrate simbad to the given waitTime
      *
-     * @param toWaitTime Valor que tendrá la variable 'waitTime'
+     * @param toWaitTime the time between sensors meassurements
      */
     public void calibrarSimbad(int toWaitTime) {
         this.toWaitTime = toWaitTime;
@@ -212,24 +220,12 @@ public class DifferentialPilot {
 
     /**
      * Setter.
-     * Establece la velocidad de traslación del piloto.
+     * Sets the pilot speed, depending on the 'byte' argument.
+     * If cero(0), sets the translation speed, and, if one(1),
+     * sets the rotation speed
      *
-     * @param speed Velocidad a establecer en el piloto.
-     */
-    /*public void setSpeed(final int speed) {
-        this.speed = speed / 10;
-        this.robot.setTranslationalVelocity(this.speed);
-    }*/
-
-    /**
-     * Setter.
-     * Establece la velocidad de traslación o rotación del piloto, en función
-     * del argumento 'byte'.
-     * En caso de que sea cero(0), modifica la velocidad de traslación, y en caso
-     * de que sea uno(1), modifica la de rotación.
-     *
-     * @param speed Velocidad a establecer.
-     * @param tipo Tipo de velocidad.
+     * @param speed - new speed
+     * @param tipo 0 for translation, 1 for rotation.
      */
     private void setSpeed(double speed, byte tipo) {
         this.speed = speed / 10;
@@ -242,45 +238,53 @@ public class DifferentialPilot {
 
     /**
      * Setter.
-     * Establece la velocidad de traslación del piloto.
+     * Sets the pilot travel speed
      *
-     * @param speed Velocidad a establecer.
+     * @param speed - new Speed
      */
     public void setTravelSpeed(double speed) {
         this.setSpeed(speed, (byte) 0);
     }
     
+    /**
+     * Setter.
+     * Sets the pilot rotation speed
+     *
+     * @param speed - new Speed
+     */
     public void setRotateSpeed(double speed) {
         this.setSpeed(speed, (byte) 1);
     }
 
     /**
      * Getter.
-     * Devuelve la velocidad de traslación del piloto.
+     * Returns the pilot travel speed
+     * 
+     * @return float with the speed
      */
     public float getTravelSpeed() {
         return (float) this.speed;
     }
 
     /**
-     * Método que establece la velocidad de traslación del piloto.
+     * Sets the pilot translational speed
      */
     public void forward() {
         this.robot.setTranslationalVelocity(speed);
     }
 
     /**
-     * Método que establece la velocidad de traslación del piloto, inversa a
-     * 'speed'.
+     * Sets the pilot transaltional speed, reverse.
+     * Inverse operation than 'forward'
      */
     public void backward() {
         this.robot.setTranslationalVelocity((-1) * speed);
     }
 
     /**
-     * Pasa el ángulo a radianes y rota el robot.
+     * Rotate the motor the given angle
      *
-     * @param angle Ángulo a rotar, en grados.
+     * @param angle - The angle to rotate, in degrees
      */
     public void rotate(double angle) {
         //Variable aleatoria para añadir realismo al giro
@@ -298,18 +302,26 @@ public class DifferentialPilot {
     }
 
     /**
-     * Ejecuta el método rotate(int).
-     * No utiliza el parámetro boolean.
+     * Runs 'rotate' in a new Thread if immediateReturn is true
      *
-     * @param angle Ángulo a rotar.
-     * @param immediateReturn No se utiliza.
+     * @param angle
+     * @param immediateReturn if true, launch a new thread
      */
-    public void rotate(double angle, boolean immediateReturn) {
-        this.rotate(angle);
+    public void rotate(final double angle, boolean immediateReturn) {
+        if (immediateReturn) {
+            Thread thread = new Thread(new Runnable() {
+                public void run(){
+                    rotate(angle);
+                }
+            });
+            thread.start();
+        } else {
+            rotate(angle);
+        }
     }
     
     /**
-     * Gira 90º a la izquierda
+     * Rotates 90º to the left
      * 
      */
     public void rotateLeft() {
@@ -317,7 +329,7 @@ public class DifferentialPilot {
     }
     
     /**
-     * Gira 90º a la derecha
+     * Rotates 90º to the right
      * 
      */
     public void rotateRight() {
@@ -325,37 +337,7 @@ public class DifferentialPilot {
     }
 
     /**
-     * Establece la velocidad de traslación a cero(0), y la velocidad de rotación
-     * a la que se le pasa como parámetro.
-     *
-     * @param velocidad Velocidad de rotación.
-     */
-    /*public void rotate(double velocidad) {
-        this.robot.setTranslationalVelocity(0);
-        this.robot.setRotationalVelocity(velocidad);
-    }*/
-
-    /**
-     * Getter.
-     * Devuelve 'true' si el robot se encuentra rotando.
-     *
-     * @return Si el piloto está en rotación.
-     */
-    /*
-    public boolean getRotacionMotor() {
-        return this.rotacionMotor;
-    }*/
-
-    /**
-     * Setter.
-     * Establece el estado de rotación del piloto.
-     */
-    /*public void setRotacionMotor(boolean estado) {
-        this.rotacionMotor = estado;
-    }*/
-
-    /**
-     * Para el robot, poniendo las velocidades de traslación y rotación a  cero(0).
+     * Stops the robot, setting both Translational and Rotational Speeds to 0
      */
     public void stop() {
         this.robot.setTranslationalVelocity(0);
@@ -363,70 +345,36 @@ public class DifferentialPilot {
     }
     
     /**
-     * Para el robot, poniendo las velocidades de traslación y rotación a  cero(0).
+     * Stops the robot, setting both Translational and Rotational Speeds to 0
      * 
-     * En el simulador, no hay diferencia con stop()
+     * For the simulator, this is equals to call stop()
      */
     public void quickStop() {
     	stop();
     }
 
     /**
-     * Pone a cero(0) una velocidad determinada, en función del argumento.
+     * Returns true if any of the speeds is true
      *
-     * @param velocidad Discrimina entre Traslación(0) y Rotación(1).
-     */
-    /*public void stop(byte velocidad) {
-        if (velocidad == 0) {
-            this.robot.setTranslationalVelocity(0);
-        } else {
-            this.robot.setRotationalVelocity(0);
-        }
-    }*/
-
-    /**
-     * Devuelve 'true' si alguna de las velocidades del robot es distinta de cero(0).
-     *
-     * @return Si el piloto está en movimiento o no.
+     * @return true if the pilot is on the move
      */
     public boolean isMoving() {
-        boolean isMoving;
+        return (this.robot.getTranslationalVelocity() != 0 
+                || this.robot.getRotationalVelocity() != 0);
+        /*boolean isMoving;
         if (this.robot.getTranslationalVelocity() != 0 || this.robot.getRotationalVelocity() != 0) {
             isMoving = true;
         } else {
             isMoving = false;
         }
-        return isMoving;
+        return isMoving;*/
     }
 
-    /**
-     * Devuelve 'true' si la velocidad que se le ha pasado como parámetro es
-     * distinta de cero(0).
-     *
-     * @return Si el piloto está o no en movimiento.
-     */
-    /*public double isMoving(byte velocidad) {
-        if (velocidad == 0) {
-            return this.robot.getTranslationalVelocity();
-        } else {
-            return this.robot.getRotationalVelocity();
-        }
-    }*/
 
     /**
-     * Getter.
+     * Moves the pilot the given distance
      *
-     * @return Distancia recorrida
-     */
-    /*public float getTravelDistance() {
-        float odometro = (float) this.robot.getOdometer() * 1000;
-        return odometro;
-    }*/
-
-    /**
-     * Desplaza el piloto una distancia determinada.
-     *
-     * @param distance Distancia que se desplazará el piloto.
+     * @param distance
      */
     public void travel(double distance) {
         double inicio = this.robot.getOdometer();
@@ -434,7 +382,7 @@ public class DifferentialPilot {
         float travelTemp = 0;
         int count = 0;
 
-        //Variable aleatoria para añadir realismo al avance
+        //Random variable for realism 
         int va = 0;
         int va2 = 0;
         if (this.realism) {
@@ -454,7 +402,7 @@ public class DifferentialPilot {
                 this.robot.setTranslationalVelocity(-this.speed);
             }
 
-            //Para evitar que se quede bloqueado contra un obstáculo al avanzar
+            //To prevent the robot remaining lock on an obstacle
             if (travelTemp == (float) (this.robot.getOdometer() - inicio) * (1000 / 4)) {
                 count++;
             } else {
@@ -471,26 +419,41 @@ public class DifferentialPilot {
     }
 
     /**
-     * Ejecuta el método 'travel(final float)'.
+     * Runs the 'travel(distance)' on a new Thread if immediateReturn is true
      *
-     * @param distance Distancia que se desplazará el piloto.
-     * @param immediateReturn No se utiliza.
+     * @param distance
+     * @param immediateReturn if true, launch a new Thread.
      */
-    public void travel(double distance, boolean immediateReturn) {
-        this.travel(distance);
+    public void travel(final double distance, boolean immediateReturn) {
+        if (immediateReturn) {
+            Thread thread = new Thread(new Runnable() {
+                public void run(){
+                    travel(distance);
+                }
+            });
+            thread.start();
+        } else {
+            travel(distance);
+        }
     }
 
     /**
-     * Método utilizado para las esperas.
+     * Method to wait
      *
-     * @param n Milisegundos a esperar.
+     * @param n the number of miliseconds to wait
      */
     private static void wait(int n) {
-        long t0, t1;
-        t0 = System.currentTimeMillis();
-        do {
-            t1 = System.currentTimeMillis();
-        } while (t1 - t0 < n);
+        try {
+            Thread.sleep(n);
+        } catch(Exception e) {
+            System.out.println("Exception while thread was sleeping");
+            System.out.println(e.getStackTrace());
+        }
+        //long t0, t1;
+        //t0 = System.currentTimeMillis();
+        //do {
+        //    t1 = System.currentTimeMillis();
+        //} while (t1 - t0 < n);
     }
 
     /////////////////////////////
@@ -499,134 +462,134 @@ public class DifferentialPilot {
     public DifferentialPilot(final float wheelDiameter, final float trackWidth,
             final Motor leftMotor, final Motor rightMotor,
             final boolean reverse) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public DifferentialPilot(final float leftWheelDiameter,
             final float rightWheelDiameter, final float trackWidth,
             final Motor leftMotor, final Motor rightMotor,
             final boolean reverse) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void addMoveListener(MoveListener m) {
-    	throw new UnsupportedOperationException("Este método no está implementado.");
+    	throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public boolean isStalled() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     protected void movementStart(boolean alert) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }	
 
     public void setSpeed(final int leftSpeed, final int rightSpeed)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void setAcceleration(int acceleration) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void setMinRadius(double radius) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public float getMaxTravelSpeed() throws UnsupportedOperationException {
         // Simbad no está limitado por la velocidad
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public double getRotateSpeed() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public float getMaxRotateSpeed() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public double getRotateMaxSpeed() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public double getMinRadiuos() throws UnsupportedOperationException {
-    	throw new UnsupportedOperationException("Este método no está implementado.");
+    	throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public Move getMovement() throws UnsupportedOperationException {
-    	throw new UnsupportedOperationException("Este método no está implementado.");
+    	throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public float getAngleIncrement() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void reset() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void steer(double turnRate)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void steerBackward(double turnRate)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void steer(double turnRate, double angle)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void steer(double turnRate, double angle, boolean immediateReturn)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void rotationStarted(RegulatedMotor motor, int tachoCount, boolean stall, long ts)
     		throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void	rotationStopped(RegulatedMotor motor, int tachoCount, boolean stall, long ts)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     //public void arc(final double radius) throws UnsupportedOperationException {
-    //    throw new UnsupportedOperationException("Este método no está implementado.");
+    //    throw new UnsupportedOperationException("This method is not implemented yet.");
     //}
 
     public void arc(final double radius, final double angle)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void arc(final double radius, final double angle,
             final boolean immediateReturn) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void arcBackward(final double radius)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void travelArc(double radius, double distance) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void travelArc(double radius, double distance, boolean immediateReturn)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     /**
-     * Laberintos
+     * Creates the mazes
      */
     private void setEnviroment() {
         this.enviroment = new EnvironmentDescription();

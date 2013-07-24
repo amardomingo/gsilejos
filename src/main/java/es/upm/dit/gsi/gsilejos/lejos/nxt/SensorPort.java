@@ -1,5 +1,13 @@
 package es.upm.dit.gsi.gsilejos.lejos.nxt;
 
+
+/**
+ * 
+ * Class with a list of the different sensors for the simulator
+ * 
+ * @author fet
+ *
+ */
 public class SensorPort {
 
     public static final SensorPort S1 = new SensorPort(0);

@@ -4,6 +4,7 @@ package es.upm.dit.gsi.gsilejos.lejos.robotics.navigation;
  * Should be implemented by a Pilot that provides a partial movement to a pose
  * when requested.
  *
+ *
  * @author amardomingo
  */
 public interface MoveProvider {

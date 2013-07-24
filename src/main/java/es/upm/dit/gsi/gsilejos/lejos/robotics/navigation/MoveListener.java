@@ -1,5 +1,13 @@
 package es.upm.dit.gsi.gsilejos.lejos.robotics.navigation;
 
+
+/**
+ * 
+ * Placeholder for the MoveListener interface. Does nothing.
+ * 
+ * @author amardomingo
+ *
+ */
 public interface MoveListener {
 	
 	/**

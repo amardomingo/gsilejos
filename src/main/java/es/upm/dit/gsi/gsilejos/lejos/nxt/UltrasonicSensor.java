@@ -4,6 +4,14 @@ import simbad.sim.RangeSensorBelt;
 import simbad.sim.Robot;
 import simbad.sim.RobotFactory;
 
+
+/**
+ * 
+ * Ultrasonic sensor for the simulator
+ * 
+ * @author fet
+ *
+ */
 public class UltrasonicSensor {
 
     private Robot robot;

@@ -1,5 +1,14 @@
 package es.upm.dit.gsi.gsilejos.lejos.robotics;
 
+
+/**
+ * 
+ * Interface for the Listener.
+ * Just a placeholder, does nothing.
+ * 
+ * @author amardomingo
+ *
+ */
 public interface RegulatedMotorListener {
 
 

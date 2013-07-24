@@ -1,14 +1,24 @@
 package es.upm.dit.gsi.gsilejos.lejos.robotics;
 
 import es.upm.dit.gsi.gsilejos.lejos.robotics.navigation.DifferentialPilot;
-import es.upm.dit.gsi.gsilejos.lejos.robotics.navigation.MoveListener;
+//import es.upm.dit.gsi.gsilejos.lejos.robotics.navigation.MoveListener;
 
+
+/**
+ * 
+ * Simulates the Lejos RegulatedMotor for the simulator
+ * 
+ * Be careful, some methods are unimplemented
+ * 
+ * @author amardomingo
+ *
+ */
 public class RegulatedMotor {
 
-    private double speed;          // Velocidad
-    private byte direction;     // Dirección: 0F 1L 2R
+    private double speed;       // Speed
+    private byte direction;     // Direction: 0F 1L 2R
     private boolean moving;     // T or F
-    private int anguloRotado;   // Angulo rotado por el motor
+    private int anguloRotado;   // Angle rotated by the motor.
 
     DifferentialPilot piloto;
 
@@ -19,9 +29,9 @@ public class RegulatedMotor {
 
     /**
      * Constructor.
-     * La velocidad por defecto es 2 (en simbad 0.2).
-     * La dirección por defecto es 2 (dcha, como establece el algoritmo).
-     * El valor de 'move' es cero(0).
+     * Default speed is 2 (0.2 in simbad).
+     * Default direction is 2 (right, as stated in the algorithm).
+     * Default move value is 0.
      */
     public RegulatedMotor() {
        this.speed = 2;
@@ -32,9 +42,9 @@ public class RegulatedMotor {
 
     /**
      * Setter.
-     * Establece el piloto al que pertenece el motor y la dirección del mismo.
+     * Sets the pilot the simulator belongs to, and its direction
      * 
-     * Solo para el simulador
+     * SIMULATOR ONLY
      *
      * @param piloto
      * @param direction
@@ -45,11 +55,11 @@ public class RegulatedMotor {
     }
 
     /**
-     * Arranca el motor a la velocidad de la variable 'speed'.
-     * En función del valor de 'direction', gira el piloto en un sentido u otro.
+     * Starts the motor at the speed given for the variable 'speed'
+     * It will turn to one direction or another depending of the value of
+     * the 'direction' variable.
      *
-     * @throws IllegalStateException Lanza la excepción si el piloto se encuentra
-     *                               ya rotando en ese momento.
+     * @throws IllegalStateException If the pilot is already moving
      */
     public void forward() throws IllegalStateException {
         //if (!this.piloto.getRotacionMotor()) {
@@ -73,12 +83,12 @@ public class RegulatedMotor {
     }
 
     /**
-     * Arranca el motor a la velocidad de la variable 'speed'.
-     * En función del valor de 'direction', gira el piloto en un sentido u otro.
-     * En nuestro caso, es inverso al método 'forward()'
+     * Starts the motor at the speed given for the variable 'speed'
+     * It will turn to one direction or another depending of the value of
+     * the 'direction' variable.
+     * Is opposite to 'forward()'
      *
-     * @throws IllegalStateException Lanza la excepción si el piloto se encuentra
-     *                               ya rotando en ese momento.
+     * @throws IllegalStateException If the pilot is already moving
      */
     public void backward() {
         //if (!this.piloto.getRotacionMotor()) {
@@ -102,7 +112,7 @@ public class RegulatedMotor {
     }
 
     /**
-     * Para el motor y establece como 'false' el estado de rotación del mismo.
+     * Stops the motor, and set 'moving' to false
      */
     public void stop() {
         //byte motor = 1;
@@ -112,18 +122,18 @@ public class RegulatedMotor {
     }
 
     /**
-     * Devuelve la variable 'move' del objeto.
+     * Returns the 'moving' variable
      *
-     * @return moving Si está en movimiento, devuelve 'true'.
+     * @return true if the motor is on the move
      */
     public boolean isMoving() {
         return this.moving;
     }
 
     /**
-     * Rota el piloto a la posición que se le pasa como argumento.
+     * Rotates the pilot to the position given as argument
      *
-     * @param limitAngle Angulo al que rotará el piloto.
+     * @param limitAngle - Angle to be rotated to.
      */
     public void rotateTo(int limitAngle) {
         int anguloActual = this.anguloRotado%360;
@@ -131,16 +141,27 @@ public class RegulatedMotor {
     }
 
     /**
-     * Ejecuta el método rotateTo(int)
+     * Runs the 'rotateTo' method in a separate Thread
+     * Experimental
      */
-    public void rotateTo(int limitAngle,boolean immediateReturn) {
-        this.rotateTo(limitAngle);
+    public void rotateTo(final int limitAngle,boolean immediateReturn) {
+        
+        if (immediateReturn) {
+            Thread thread = new Thread(new Runnable() {
+                public void run(){
+                    rotateTo(limitAngle);
+                }
+            });
+            thread.start();
+        } else {
+            this.rotateTo(limitAngle);
+        }
     }
 
     /**
-     * Rota el piloto los grados que se le pasan como argumentos.
+     * Rotate the pilot the angle given as parameters
      *
-     * @param angle Angulo que rotará el piloto.
+     * @param angle - Angle to rotate.
      */
     public void rotate(int angle) {
         switch(this.direction) {
@@ -158,102 +179,103 @@ public class RegulatedMotor {
     }
 
     /**
-     * Ejecuta el método rotate(int)
+     * Runs the 'rotate(angle)' method in a separated Thread
+     * Experimental
      */
-    public void rotate(int angle, boolean immediateReturn) {
-        this.rotate(angle);
+    public void rotate(final int angle, boolean immediateReturn) {
+        if (immediateReturn) {
+            Thread thread = new Thread(new Runnable() {
+                public void run(){
+                    rotate(angle);
+                }
+            });
+            thread.start();
+        } else {
+            rotate(angle);
+        }
     }
 
     /**
-     * Establece el valor de la variable que se le pasa como argumento a la
-     * 'speed' del motor.
+     * Setter
+     * Sets the speed of the motor
      *
-     * @param speed Entero que representa la velocidad a la que se moverá el piloto.
+     * @param speed int representing the speed of the pilot
      */
     public void setSpeed (int speed) {
         this.speed = speed;
     }
 
     /**
-     * Devuelve la velocidad actual de rotación del motor (esté o no en movimiento).
+     * Getter
+     * Return the motor speed, regardless of it being stop or in moventent
      *
-     * @return speed Entero con el valor de la velocidad actual del motor.
+     * @return speed int with the motor speed
      */
     public double getSpeed() {
         return this.speed;
     }
 
     /**
-     * Devuelve el mismo valor de getSpeed().
-     *
-     * @return speed Entero con el valor de la velocidad actual del motor.
+     * Getter
+     * Return the same value as getSpeed()
+     * 
+     * @return speed - int with the motor speed
+     * @see getSpeed()
      */
     public double getRotationSpeed() {
         return this.getSpeed();
     }
-
-    /**
-     * Getter.
-     * Devuelve el ángulo que ha rotado el motor desde su creación.
-     *
-     * @return Angulo rotado.
-     */
-    /*public int getAnguloRotado() {
-        return this.anguloRotado;
-    }*/
-
-   
    
     //////////////////////////////
     // METODOS NO IMPLEMENTADOS //
     //////////////////////////////
 
     public void addMoveListener(RegulatedMotorListener m) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public RegulatedMotorListener removeListener() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void flt() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     void updateState( int mode) {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public int getLimitAngle() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public float getMaxSpeed() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public boolean isStalled() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void setStallThreshold(int error, int time){
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public int getTachoCount() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void resetTachoCount() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
     public void setAcceleration() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
     
     public void waitComplete() {
-        throw new UnsupportedOperationException("Este método no está implementado.");
+        throw new UnsupportedOperationException("This method is not implemented yet.");
     }
 
 }
