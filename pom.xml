@@ -19,9 +19,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https://github.com/amardomingo/gsilejos.git</connection>
-		<developerConnection>scm:git:https://github.com/amardomingo/gsilejos.git</developerConnection>
-		<url>http://github.com/amardomingo/gsilejos</url>
+		<connection>scm:git:https://github.com/gsi-upm/gsilejos.git</connection>
+		<developerConnection>scm:git:https://github.com/gsi-upm/gsilejos.git</developerConnection>
+		<url>http://github.com/gsi-upm/gsilejos</url>
 	</scm>
 
 	<developers>
@@ -48,7 +48,7 @@
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/amardomingo/gsilejos/issues</url>
+		<url>https://github.com/gsi-upm/gsilejos/issues</url>
 	</issueManagement>
 
 	<pluginRepositories>
